@@ -18,7 +18,7 @@
 
     - name: Tell user when Insights Client is not configured
       ansible.builtin.debug:
-        msg: "Insights client does not appear to be configured. Scan will be skipped"
+        msg: Insights client does not appear to be configured. Scan will be skipped
       when:
         - ansible_local.insights.system_id is not defined
 
