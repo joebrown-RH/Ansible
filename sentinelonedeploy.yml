@@ -1,0 +1,32 @@
+---
+- name: Deploy SentinelOne Agent on RHEL 9 VMs
+  hosts: all  # This should match your inventory group for RHEL 9 VMs.
+  become: true      # The role requires root privileges to install the agent.
+  gather_facts: true # Gathers facts to determine OS and architecture for the correct agent package.
+
+  tasks:
+    - name: Ensure SentinelOne API collection is installed
+      community.general.ansible_galaxy:
+        name: sva.sentinelone
+        type: collection
+        state: present
+
+    # This debug task is added to demonstrate that the API token is a secret.
+    # When you run the job, the console_url will be displayed, but the api_token
+    # will be masked, proving it is being handled securely by the platform.
+    - name: Debug and verify that credentials are not exposed
+      ansible.builtin.debug:
+        msg: "Using console URL: {{ sentinelone_console_url }} with API token: {{ sentinelone_api_token }}"
+
+    - name: Include SentinelOne agent installation role
+      ansible.builtin.include_role:
+        name: sva.sentinelone.install_agent
+      vars:
+        # The variables below are automatically injected from the custom credential
+        # assigned to the Job Template. The names match the 'injector' configuration.
+        console_url: "{{ sentinelone_console_url }}"
+        api_token: "{{ sentinelone_api_token }}"
+        site: "{{ sentinelone_site }}"
+        # The gpg_key is only required for Linux systems with specific package managers.
+        # This variable is optional in our custom credential type, so we can check if it exists.
+        gpg_key: "{{ sentinelone_gpg_key | default(omit) }}"
