@@ -5,12 +5,6 @@
   gather_facts: true # Gathers facts to determine OS and architecture for the correct agent package.
 
   tasks:
-    - name: Ensure SentinelOne API collection is installed
-      community.general.ansible_galaxy:
-        name: sva.sentinelone
-        type: collection
-        state: present
-
     # This debug task is added to demonstrate that the API token is a secret.
     # When you run the job, the console_url will be displayed, but the api_token
     # will be masked, proving it is being handled securely by the platform.
