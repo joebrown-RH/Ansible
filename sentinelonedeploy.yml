@@ -8,11 +8,11 @@
     # This debug task is added to demonstrate that the API token is a secret.
     # When you run the job, the console_url will be displayed, but the api_token
     # will be masked, proving it is being handled securely by the platform.
-    - name: Debug and verify that credentials are not exposed
+    - name: Debug and verify that credentials are not exposed using a regex filter
       ansible.builtin.debug:
         msg: "Using console URL: {{ sentinelone_console_url }} with API token: {{ sentinelone_api_token | regex_replace('.*', '***') }}"
         
-    - name: Debug and verify that credentials are not exposed
+    - name: Debug and verify that credentials are not exposed using no_log
       ansible.builtin.debug:
         msg: "Using console URL: {{ sentinelone_console_url }} with API token: {{ sentinelone_api_token }}"
       no_log: true
