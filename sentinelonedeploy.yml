@@ -11,6 +11,13 @@
     - name: Debug and verify that credentials are not exposed
       ansible.builtin.debug:
         msg: "Using console URL: {{ sentinelone_console_url }} with API token: {{ sentinelone_api_token | regex_replace('.*', '***') }}"
+        
+    - name: Debug and verify that credentials are not exposed
+      ansible.builtin.debug:
+        msg: "Using console URL: {{ sentinelone_console_url }} with API token: {{ sentinelone_api_token }}"
+        no_log: true
+
+    
 
     - name: Include SentinelOne agent installation role
       ansible.builtin.include_role:
